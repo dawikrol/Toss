@@ -1,10 +1,9 @@
 import random
 
 
-
 class User:
 
-
+    current_logged = None
 
     def __init__(self, nickname, firstname, surname, email_address, password, user_id=0):
         self.nickname = nickname
@@ -13,11 +12,6 @@ class User:
         self.email_address = email_address
         self.password = password
         self.user_id = user_id
-
-
-
-
-
 
     def gen_user_id(self):
         User.user_id_list = []

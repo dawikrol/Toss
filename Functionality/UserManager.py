@@ -1,4 +1,5 @@
 from Functionality.RegistrationManager import RegistrationManager
+from Model.DB import DB
 from Model.User import User
 
 
@@ -16,7 +17,8 @@ class UserManager:
 
     @staticmethod
     def create_new_user(nick, firstname, surname, email, password ):
-        print(nick, firstname, surname, email, password)
+        user = User(nick, firstname, surname, email, password)
+        DB.add_user(user)
         # user_id = RegistrationManager.generate_user_id()
         # new_user = User(nick, firstname, surname, email, password, user_id)
         # UserManager.add_user_to_database(new_user)
