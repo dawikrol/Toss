@@ -3,6 +3,7 @@ from tkinter import *
 from Functionality.UserManager import UserManager
 
 
+
 class SignInGUI:
 
     def __init__(self):
@@ -14,6 +15,9 @@ class SignInGUI:
         self.entry_surname = None
         self.entry_email = None
         self.entry_password = None
+
+    def __del__(self):
+        self.root.destroy()
 
 
 
@@ -78,3 +82,5 @@ class SignInGUI:
         email = self.entry_email.get()
         password = self.entry_password.get()
         UserManager.create_new_user(nick, firstname, surname, email, password)
+        self.root.withdraw()
+        self.root.quit()
