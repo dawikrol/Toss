@@ -1,7 +1,4 @@
 from tkinter import *
-
-
-
 class MainMenuGUI:
 
     def __init__(self):

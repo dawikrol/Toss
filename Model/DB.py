@@ -1,25 +1,58 @@
 from pprint import pprint
 import mysql.connector
+from mysql.connector import InterfaceError, ProgrammingError
+
+from GUI.InfoBoxGUI import InfoBoxGUI
 
 
 class DB:
 
     def __init__(self):
-        self.toss_db = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            passwd='admin1234'
-        )
-        #self.create_toss_db()
+
+        try:
+            self.toss_db = mysql.connector.connect(
+                host='localhost',
+                user='root',
+                passwd='admin1234',
+                database='tossdb')
+        except (InterfaceError, ProgrammingError, AttributeError) as e:
+            error = f"Probably config data are incorrect. \n\n Error: {e}"
+            InfoBoxGUI().error_box(error)
+        except Exception as e:
+            error = f"Something went wrong during connecting with database. \n\n Error: {e}"
+            InfoBoxGUI().error_box(error)
+
+
 
     def execute_query(self, query):
         cursor = self.toss_db.cursor()
-        cursor.execute('USE tossdb')
-        cursor.execute(f"{query}")
-        self.toss_db.commit()
+        try:
+            cursor.execute(f"{query}")
+        except ProgrammingError as e:
+            error = f"Check query syntax! \n\n Error: {e}"
+            InfoBoxGUI.error_box(error)
+        except Exception as e:
+            error = f"Something is wrong... \n\n {e}"
+            InfoBoxGUI().error_box(error)
+        else:
+            self.toss_db.commit()
 
-    def create_toss_db(self):
-        self.execute_query('CREATE DATABASE tossdb')
+    def get_data_from_db(self, query):
+        cursor = self.toss_db.cursor()
+        try:
+            cursor.execute(f"{query}")
+        except ProgrammingError as e:
+            error = f"Check query syntax! \n\n Error: {e}"
+            InfoBoxGUI().error_box(error)
+        except Exception as e:
+            error = f"Something is wrong... \n\n {e}"
+            InfoBoxGUI().error_box(error)
+        else:
+            result = cursor.fetchall()
+            return result
+
+    # def create_toss_db(self):
+    #     self.execute_query('CREATE DATABASE tossdb')
 
     # def create_users_table(self):
     #     query = '''

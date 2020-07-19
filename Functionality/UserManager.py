@@ -1,4 +1,4 @@
-from Functionality.RegistrationManager import RegistrationManager
+#from Functionality.RegistrationManager import RegistrationManager
 from Model.DB import DB
 from Model.User import User
 

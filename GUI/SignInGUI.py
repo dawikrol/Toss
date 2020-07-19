@@ -1,7 +1,9 @@
 from tkinter import *
 
 from Functionality.UserManager import UserManager
+from GUI.InfoBoxGUI import InfoBoxGUI
 
+from GUI.Validator.InputDataValidator import InputDataValidator
 
 
 class SignInGUI:
@@ -15,6 +17,7 @@ class SignInGUI:
         self.entry_surname = None
         self.entry_email = None
         self.entry_password = None
+        self.entry_repeat_password = None
 
     def __del__(self):
         self.root.destroy()
@@ -66,21 +69,29 @@ class SignInGUI:
         self.entry_password.grid(row=6, column=0)
 
     def init_entry_return_password(self):
-        self.entry_return_password = Entry(self.frame, width=35, borderwidth=7)
-        self.entry_return_password.insert(1, 'Repeat the password')
-        self.entry_return_password.grid(row=7, column=0)
+        self.entry_repeat_password = Entry(self.frame, width=35, borderwidth=7)
+        self.entry_repeat_password.insert(1, 'Repeat the password')
+        self.entry_repeat_password.grid(row=7, column=0)
 
     def init_buttons(self):
         create_account_buttons = Button(self.root, text='Create an account!', padx=15, pady=5,
         command=self.click_create_account_button)
         create_account_buttons.grid(row=8, column=0, sticky=W+E)
 
-    def click_create_account_button (self):
+    def click_create_account_button(self):
         nick = self.entry_nick_name.get()
         firstname = self.entry_firstname.get()
         surname = self.entry_surname.get()
         email = self.entry_email.get()
         password = self.entry_password.get()
-        UserManager.create_new_user(nick, firstname, surname, email, password)
+        r_password = self.entry_repeat_password.get()
+
+        if InputDataValidator.sign_up_validator(nick, firstname, surname, email, password, r_password):
+            UserManager.create_new_user(nick, firstname, surname, email, password)
+
+        else:
+
+            InfoBoxGUI().info_box(message='The entered data are incorrect')
         self.root.withdraw()
         self.root.quit()
+
