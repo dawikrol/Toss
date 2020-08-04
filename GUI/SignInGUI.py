@@ -90,7 +90,6 @@ class SignInGUI:
             UserManager.create_new_user(nick, firstname, surname, email, password)
 
         else:
-
             InfoBoxGUI().info_box(message='The entered data are incorrect')
         self.root.withdraw()
         self.root.quit()

@@ -38,9 +38,10 @@ class InputDataValidator:
         if login in nicks:
             correct_login = True
 
-        password_db = DB().get_data_from_db(query=f"SELECT password FROM users WHERE nick = '{login}'")
-        if password == password_db[0][0]:
-            correct_password = True
+            password_db = DB().get_data_from_db(query=f"SELECT password FROM users WHERE nick = '{login}'")
+            print(password_db, password)
+            if password == password_db[0][0]:
+                correct_password = True
 
         if all([correct_login, correct_password]):
             return True

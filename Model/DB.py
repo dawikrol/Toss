@@ -54,21 +54,11 @@ class DB:
     # def create_toss_db(self):
     #     self.execute_query('CREATE DATABASE tossdb')
 
-    # def create_users_table(self):
-    #     query = '''
-    #         CREATE TABLE users (
-    #         userid INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
-    #         nick VARCHAR(30),
-    #         firstname VARCHAR(30),
-    #         surname VARCHAR(30),
-    #         email VARCHAR(30),
-    #         password VARCHAR(30)
-    #         )'''
-    #     self.execute_query(query)
 
     def add_user(self, user):
         query = f"INSERT INTO users VALUES (NULL, '{user.nickname}', '{user.firstname}', '{user.surname}', '{user.email_address}', '{user.password}')"
         self.execute_query(query)
+
     # @staticmethod
     # def delete_user(user):
     #     if user.nickname in DB.users_database:

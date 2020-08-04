@@ -12,6 +12,7 @@ class LoginGUI:
         self.root = Tk()
         self.entry_login = None
         self.entry_password = None
+        self.start()
 
 
     def start(self):
@@ -49,8 +50,11 @@ class LoginGUI:
         input_login = self.entry_login.get()
         input_password = self.entry_password.get()
         if InputDataValidator.login_validator(input_login, input_password):
-            self.root.withdraw()
+
             LoginManager.log_in()
+            self.root.withdraw()
             MainMenuGUI().start()
+            self.root.destroy()
+            self.__init__()
             self.root.deiconify()
 

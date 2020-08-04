@@ -1,4 +1,7 @@
 from tkinter import *
+
+
+
 class MainMenuGUI:
 
     def __init__(self):
@@ -32,9 +35,30 @@ class MainMenuGUI:
         list_of_items.grid(row=2, column=0, columnspan=3)
 
     def init_buttons(self):
-        add_item = Button(self.root, text='+', padx=12).grid(row=3, column=0, sticky='w')
-        delete_item = Button(self.root, text='-', padx=12).grid(row=3, column=1, sticky='w')
-        edit_list = Button(self.root, text='Edit list', padx=14).grid(row=3, column=2)
-        create_new_list = Button(self.root, text='Create new list', padx=2).grid(row=1, column=3)
-        my_profile = Button(self.root, text='  My profile ', padx=8).grid(row=2, column=3, sticky='n')
-        log_out = Button(self.root, text='   Log out   ', padx=10).grid(row=3, column=3, sticky='s')
+        add_item = Button(self.root, text='+', padx=12, command=self.click_add).grid(row=3, column=0, sticky='w')
+        delete_item = Button(self.root, text='-', padx=12, command=self.click_delete).grid(row=3, column=1, sticky='w')
+        edit_list = Button(self.root, text='Edit list', padx=14, command=self.click_edit_list).grid(row=3, column=2)
+        create_new_list = Button(self.root, text='Create new list', padx=2, command=self.click_create_new_list).grid(row=1, column=3)
+        my_profile = Button(self.root, text='  My profile ', padx=8, command=self.click_my_profile).grid(row=2, column=3, sticky='n')
+        log_out = Button(self.root, text='   Log out   ', padx=10, command=self.click_log_out).grid(row=3, column=3,
+                                                                                                   sticky='s')
+
+    def click_log_out(self):
+        self.root.withdraw()
+        self.root.quit()
+
+    def click_create_new_list(self):
+        pass
+
+    def click_my_profile(self):
+        pass
+
+    def click_edit_list(self):
+        pass
+
+    def click_add(self):
+        pass
+
+    def click_delete(self):
+        pass
+

@@ -1,0 +1,20 @@
+    def create_users_table(self):
+        query = '''
+            CREATE TABLE users (
+            userid INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
+            nick VARCHAR(30),
+            firstname VARCHAR(30),
+            surname VARCHAR(30),
+            email VARCHAR(30),
+            password VARCHAR(30)
+            )'''
+        self.execute_query(query)
+
+
+'''Creating lists database'''
+CREATE TABLE lists (
+list_id INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
+tittle VARCHAR(30) DEFAULT 'list',
+members VARCHAR(300),
+items VARCHAR(1000)
+);

@@ -6,14 +6,6 @@ from Model.User import User
 
 class UserManager:
 
-    # dictionary contain users, in the future it will be change on database
-    users = {'Dawid': {
-                    'user_id': 'Dawid',
-                    'firtsname': 'd',
-                    'surname': 'd',
-                    'email': 'd@d',
-                    'password': 'Dawid',
-                }}
 
     @staticmethod
     def create_new_user(nick, firstname, surname, email, password):
