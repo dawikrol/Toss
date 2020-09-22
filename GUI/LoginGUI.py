@@ -4,6 +4,8 @@ from Functionality.LoginManager import LoginManager
 from GUI.MainMenuGUI import MainMenuGUI
 from GUI.SignInGUI import SignInGUI
 from GUI.Validator.InputDataValidator import InputDataValidator
+from Model.DB import DB
+from Model.User import User
 
 
 class LoginGUI:
@@ -50,11 +52,12 @@ class LoginGUI:
         input_login = self.entry_login.get()
         input_password = self.entry_password.get()
         if InputDataValidator.login_validator(input_login, input_password):
+            User.current_logged =  DB().get_user_from_db(input_login)
 
-            LoginManager.log_in()
             self.root.withdraw()
             MainMenuGUI().start()
             self.root.destroy()
             self.__init__()
             self.root.deiconify()
+
 

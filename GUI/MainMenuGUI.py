@@ -1,5 +1,7 @@
 from tkinter import *
 
+from GUI.CreateNewListGUI import CreateNewListGUI
+from Model.User import User
 
 
 class MainMenuGUI:
@@ -48,7 +50,8 @@ class MainMenuGUI:
         self.root.quit()
 
     def click_create_new_list(self):
-        pass
+        print(User.current_logged.nickname)
+        CreateNewListGUI().start()
 
     def click_my_profile(self):
         pass

@@ -1,6 +1,8 @@
 from Functionality.UserManager import UserManager
 
 
+# probably to delete
+
 class LoginManager:
 
 
