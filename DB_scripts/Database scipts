@@ -15,8 +15,17 @@
 CREATE TABLE lists (
 list_id INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
 tittle VARCHAR(30) DEFAULT 'list',
-members VARCHAR(300),
-items VARCHAR(1000)
+owner VARCHAR(30)
+);
+
+'Creating table of items'
+CREATE TABLE items (
+item_id INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
+list_id INTEGER(10),
+item VARCHAR(60),
+count_of_item INTEGER(4) DEFAULT 1,
+prise_per_item FLOAT(8),
+FOREIGN KEY (list_id) REFERENCES lists(list_id)
 );
 
 

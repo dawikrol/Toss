@@ -47,8 +47,15 @@ class CreateNewListGUI:
         create_next_button.grid(row=8, column=0, sticky=W+E)
 
     def click_next_button(self):
+        """This module validates the inputs, set a list_name and starts the Add Products GUI"""
         if self.list_name.get() == '':
             message = "The list name field can't be empty"
+            InfoBoxGUI().info_box(message)
+        list_name = self.list_name.get()
+        query = f"SELECT tittle from lists WHERE owner = '{User.current_logged.nickname}'"
+        names_of_lists = [list_name[0] for list_name in DB().get_data_from_db(query)]
+        if list_name in names_of_lists:
+            message = "A list with that name already exist. \n Name the list in a different way."
             InfoBoxGUI().info_box(message)
         else:
             CreateNewListGUI.list_name = self.list_name.get()
@@ -61,6 +68,8 @@ class CreateNewListGUI:
             self.root = Tk()
             self.frame = None
             self.entry_product = None
+            self.entry_num_of_products = None
+            self.entry_price = None
             self.list_of_products = []
 
         def __del__(self):
@@ -68,7 +77,7 @@ class CreateNewListGUI:
 
         def start(self):
             self.root.title('Add products')
-            Label(self.root, text="Add products to list:").grid(row=0, column=0, columnspan=1, padx=50, pady=10)
+            Label(self.root, text="Add products to list:").grid(row=0, column=0, padx=50, pady=10)
             self.init_frame()
             self.init_entry_product()
             self.init_buttons()
@@ -77,28 +86,36 @@ class CreateNewListGUI:
 
         def init_frame(self):
             self.frame = LabelFrame(self.root, padx=10, pady=10)
-            self.frame.grid(row=1, column=0)
+            self.frame.grid(row=4, column=0, sticky=W+E)
 
         def init_entry_product(self):
             # TODO: The inscription should disappear after click in the window
-            self.entry_product = Entry(self.frame, width=35, borderwidth=7)
+            self.entry_product = Entry(self.root, width=35, borderwidth=7)
             self.entry_product.insert(1, 'Add product name')
-            self.entry_product.grid(row=0, column=0)
+            self.entry_product.grid(row=2, column=0, sticky=W+E)
+            Label(self.frame, text='Number of product:').grid(row=1, column=0, sticky='w', columnspan=1)
+            self.entry_num_of_products = Entry(self.frame, width=5, borderwidth=7)
+            self.entry_num_of_products.insert(1, '1')
+            self.entry_num_of_products.grid(row=1, column=1, sticky='e')
+            Label(self.frame, text='Price per product:').grid(row=2, column=0, sticky='w')
+            self.entry_price = Entry(self.frame, width=5, borderwidth=7)
+            self.entry_price.grid(row=2, column=1, sticky='e')
+
 
         def init_buttons(self):
-            create_add_products_buttons = Button(self.frame, text='+', padx=4, pady=4,
+            create_add_products_buttons = Button(self.root, text='Add product', padx=4, pady=4,
                                                  command=self.click_add_products_button)
-            create_add_products_buttons.grid(row=0, column=1, sticky='e')
+            create_add_products_buttons.grid(row=5, column=0, sticky=W+E)
             create_next_buttons = Button(self.root, text='Next', padx=15, pady=5,
                                          command=self.click_next_button)
-            create_next_buttons.grid(row=3, column=0, sticky=W+E)
+            create_next_buttons.grid(row=7, column=0, sticky=W+E, columnspan=1)
 
         def init_listbox(self):
             list_of_items = Listbox(self.root)
             list_of_items.config(width=26)
             for item in self.list_of_products:
                 list_of_items.insert(self.list_of_products.index(item), item)
-            list_of_items.grid(row=2, column=0, columnspan=1, sticky=W+E)
+            list_of_items.grid(row=6, column=0, columnspan=1, sticky=W+E)
 
         def click_add_products_button(self):
             self.list_of_products.append(self.entry_product.get())
@@ -177,7 +194,8 @@ class CreateNewListGUI:
             # preparing data to insert to lists table
             str_of_products = ', '.join(CreateNewListGUI.list_of_products)
             str_of_products = str_of_products[:-2]
-            # insert data to lists table
+            # TODO: a part this functionality has been moved to CreateNewListGUI
+            #  insert data to lists table
             query = f"INSERT INTO lists VALUES (NULL,'{CreateNewListGUI.list_name}', '{str_of_products}');"
             DB().execute_query(query)
 
@@ -195,7 +213,9 @@ class CreateNewListGUI:
                 except IndexError as e:
                     error = f"{e} \n\n Probably user '{friend}'  doesn't exists in database "
                     InfoBoxGUI().error_box(error)
-
+        def add_data(self):
+            query = f"INSERT INTO lists VALUES (NULL,'{CreateNewListGUI.list_name}', '{User.current_logged.nickname}');"
+            DB().execute_query(query)
 
 
 
