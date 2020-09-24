@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
@@ -66,11 +67,16 @@ class CreateNewListGUI:
 
         def __init__(self):
             self.root = Tk()
-            self.frame = None
+            self.frame1 = None
+            self.frame2 = None
+            self.frame3 = None
             self.entry_product = None
             self.entry_num_of_products = None
             self.entry_price = None
+            self.add_products_tree = None
             self.list_of_products = []
+            self.num_of_products = []
+            self.prise_of_products = []
 
         def __del__(self):
             self.root.destroy()
@@ -81,50 +87,91 @@ class CreateNewListGUI:
             self.init_frame()
             self.init_entry_product()
             self.init_buttons()
-            self.init_listbox()
+            self.init_products_treeview()
             self.root.mainloop()
 
         def init_frame(self):
-            self.frame = LabelFrame(self.root, padx=10, pady=10)
-            self.frame.grid(row=4, column=0, sticky=W+E)
+            self.frame1 = LabelFrame(self.root, padx=10, pady=10)
+            self.frame1.grid(row=1, column=0)
+            self.frame2 = LabelFrame(self.root)
+            self.frame2.grid(row=3, column=0)
+            self.frame3 = LabelFrame(self.root, padx=10, pady=10)
+            self.frame3.grid(row=4, column=0)
+
 
         def init_entry_product(self):
-            # TODO: The inscription should disappear after click in the window
-            self.entry_product = Entry(self.root, width=35, borderwidth=7)
-            self.entry_product.insert(1, 'Add product name')
-            self.entry_product.grid(row=2, column=0, sticky=W+E)
-            Label(self.frame, text='Number of product:').grid(row=1, column=0, sticky='w', columnspan=1)
-            self.entry_num_of_products = Entry(self.frame, width=5, borderwidth=7)
-            self.entry_num_of_products.insert(1, '1')
-            self.entry_num_of_products.grid(row=1, column=1, sticky='e')
-            Label(self.frame, text='Price per product:').grid(row=2, column=0, sticky='w')
-            self.entry_price = Entry(self.frame, width=5, borderwidth=7)
-            self.entry_price.grid(row=2, column=1, sticky='e')
-
+            # creating labels
+            label1 = Label(self.frame1, text='Name of product', width=30)
+            label1.grid(row=0, column=0, sticky='w')
+            label1 = Label(self.frame1, text='Number of product', width=18, anchor=CENTER)
+            label1.grid(row=0, column=1, sticky='w')
+            label1 = Label(self.frame1, text='Price per product', width=18, anchor=CENTER)
+            label1.grid(row=0, column=2, sticky='w')
+            # creating entry boxes
+            self.entry_product = Entry(self.frame1, width=30)
+            self.entry_product.grid(row=1, column=0)
+            self.entry_num_of_products = Entry(self.frame1, width=17)
+            self.entry_num_of_products.grid(row=1, column=1)
+            self.entry_price = Entry(self.frame1, width=17)
+            self.entry_price.grid(row=1, column=2)
 
         def init_buttons(self):
-            create_add_products_buttons = Button(self.root, text='Add product', padx=4, pady=4,
+            create_add_products_buttons = Button(self.frame2, text='Add product', width=22,
                                                  command=self.click_add_products_button)
-            create_add_products_buttons.grid(row=5, column=0, sticky=W+E)
-            create_next_buttons = Button(self.root, text='Next', padx=15, pady=5,
+            create_add_products_buttons.grid(row=0, column=0, sticky='w')
+            create_next_buttons = Button(self.frame2, text='Next', width=22,
                                          command=self.click_next_button)
-            create_next_buttons.grid(row=7, column=0, sticky=W+E, columnspan=1)
+            create_next_buttons.grid(row=0, column=2)
+            create_delete_buttons = Button(self.frame2, text='Delete', width=24,
+                                           command=self.click_delete_button)
+            create_delete_buttons.grid(row=0, column=1)
 
-        def init_listbox(self):
-            list_of_items = Listbox(self.root)
-            list_of_items.config(width=26)
-            for item in self.list_of_products:
-                list_of_items.insert(self.list_of_products.index(item), item)
-            list_of_items.grid(row=6, column=0, columnspan=1, sticky=W+E)
+        def init_products_treeview(self):
+            self.add_products_tree = ttk.Treeview(self.root)
+            self.add_products_tree['columns'] = ("Product", "Number", "Price")
+
+            self.add_products_tree.column("#0", width=0, stretch=NO)
+            self.add_products_tree.column('Product', anchor=W, width=120)
+            self.add_products_tree.column('Number', anchor=CENTER, width=60)
+            self.add_products_tree.column('Price', anchor=CENTER, width=80)
+
+            self.add_products_tree.heading("#0", text="", anchor=W)
+            self.add_products_tree.heading("Product", text="Product", anchor=W)
+            self.add_products_tree.heading("Number", text="Number", anchor=W)
+            self.add_products_tree.heading("Price", text="Price per item", anchor=W)
+
+            self.add_products_tree.grid(row=2, column=0, columnspan=1, sticky=W+E)
 
         def click_add_products_button(self):
+            # TODO: build the checkers and function input data to treeview and set value for global variable
             self.list_of_products.append(self.entry_product.get())
-            self.init_listbox()
+            self.num_of_products.append(self.entry_num_of_products.get())
+            self.prise_of_products.append(self.entry_price.get())
+            CreateNewListGUI.AddProductsGUI().name_checker()
+            CreateNewListGUI.AddProductsGUI().number_checker()
+            CreateNewListGUI.AddProductsGUI().price_checker()
+            CreateNewListGUI.AddProductsGUI().add_products_tree()
+
+        def name_checker(self):
+            pass
+
+        def number_checker(self):
+            pass
+
+        def price_checker(self):
+            pass
+
+        def add_record_to_add_products_tree(self):
+
+            add_products_tree.insert(parent='', index='end', iid=0, text='Parent', values=("{}", 1, "Peperoni"))
 
         def click_next_button(self):
             CreateNewListGUI.list_of_products = self.list_of_products
             self.root.withdraw()
             CreateNewListGUI.AddFriendsGUI().start()
+
+        def click_delete_button(self):
+            pass
 
     class AddFriendsGUI:
 
