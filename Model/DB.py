@@ -75,7 +75,3 @@ class DB:
             surname = result[0][3]
             email = result[0][4]
             return User(user_id, nick, firstname, surname, email)
-
-
-
-DB().get_user_from_db('Login')

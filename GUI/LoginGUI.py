@@ -1,6 +1,5 @@
 from tkinter import Tk, Label, Entry, Button
 
-from Functionality.LoginManager import LoginManager
 from GUI.MainMenuGUI import MainMenuGUI
 from GUI.SignInGUI import SignInGUI
 from GUI.Validator.InputDataValidator import InputDataValidator
