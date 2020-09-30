@@ -9,7 +9,7 @@ from Model.User import User
 class MainMenuGUI:
     # TODO: OptionMenu doesn't display selected option, OptionMenu must get the selected item, add data to treeview dosen't work
 
-    lists = []
+    lists = [1, 2,3]
     clicked_selected = []
 
 
@@ -45,7 +45,7 @@ class MainMenuGUI:
         self.get_data_to_drop_down_list()
 
     def get_data_to_drop_down_list(self):
-        query = f"SELECT list_id FROM relations WHERE user_id={User.current_logged.user_id}"
+        query = f"SELECT list_id FROM relations WHERE user_id='Login'"
         ids_list = DB().get_data_from_db(query)
         for list_id in ids_list:
             query = f"SELECT tittle FROM lists WHERE list_id = {list_id[0]}"
@@ -53,6 +53,7 @@ class MainMenuGUI:
             MainMenuGUI.lists.append(name_of_list)
 
     def add_data_to_Treeview(self):
+        pass
         query = f"SELECT FROM lists WHERE tittle='{MainMenuGUI.clicked_selected}' AND owner='{User.current_logged.nickname}'"
         print(DB().get_data_from_db(query)[0][0])
 
@@ -99,14 +100,13 @@ class MainMenuGUI:
         self.root.quit()
 
     def click_create_new_list(self):
-        print(User.current_logged.nickname)
         CreateNewListGUI().start()
 
     def click_my_profile(self):
         pass
 
     def click_edit_list(self):
-        pass
+        EditListGUI().start()
 
     def click_add(self):
         pass
