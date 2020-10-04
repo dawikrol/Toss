@@ -1,5 +1,4 @@
-from tkinter import Tk, Label, Entry, Button
-
+from tkinter import *
 from GUI.MainMenuGUI import MainMenuGUI
 from GUI.SignInGUI import SignInGUI
 from GUI.Validator.InputDataValidator import InputDataValidator
@@ -17,8 +16,7 @@ class LoginGUI:
 
 
     def start(self):
-        self.root.title('Start page')
-        Label(self.root, text="Welcome in Toss!").grid(row=0, column=0, columnspan=2)
+
         self.init_login_entry()
         self.init_password_entry()
         self.init_buttons()
@@ -51,12 +49,10 @@ class LoginGUI:
         input_login = self.entry_login.get()
         input_password = self.entry_password.get()
         if InputDataValidator.login_validator(input_login, input_password):
-            User.current_logged =  DB().get_user_from_db(input_login)
-
-            self.root.withdraw()
-            MainMenuGUI().start()
+            User.current_logged = DB().get_user_from_db(input_login)
             self.root.destroy()
-            self.__init__()
-            self.root.deiconify()
+            MainMenuGUI().start()
+
+
 
 

@@ -2,26 +2,31 @@ from tkinter import *
 from tkinter import ttk
 
 from GUI.CreateNewListGUI import CreateNewListGUI
+from GUI.EditListGUI import EditListGUI
+from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
 from Model.User import User
 
 
 class MainMenuGUI:
-    # TODO: OptionMenu doesn't display selected option, OptionMenu must get the selected item, add data to treeview dosen't work
 
-    lists = [1, 2,3]
+    lists = []
     clicked_selected = []
+    list_id = ''
+
 
 
     def __init__(self):
         self.root = Tk()
         self.frame1 = None
-        self.frame2 =None
+        self.frame2 = None
         self.add_products_tree = None
+        self.counter = 0
+        self.clicked = ''
 
 
     def start(self):
-        self.root.title('Main page')
+        self.root.title('Main menu')
         Label(self.root).grid(row=0, column=0)
         self.root.geometry('540x500')
         self.init_drop_down_list()
@@ -33,29 +38,38 @@ class MainMenuGUI:
     def init_drop_down_list(self):
         self.frame1 = LabelFrame(self.root, padx=5)
         self.frame1.grid(row=0, column=0)
-
         self.get_data_to_drop_down_list()
         clicked = StringVar()
         clicked.set(MainMenuGUI.lists[0])
-        drop = OptionMenu(self.frame1, clicked, *MainMenuGUI.lists)
+        drop = OptionMenu(self.frame1, clicked, *MainMenuGUI.lists, command=self.get_data_to_Treeview)
         drop.config(width=80)
         drop.grid(row=1, column=0, columnspan=3)
         MainMenuGUI.clicked_selected = clicked.get()
-        print(MainMenuGUI.clicked_selected)
-        self.get_data_to_drop_down_list()
 
     def get_data_to_drop_down_list(self):
-        query = f"SELECT list_id FROM relations WHERE user_id='Login'"
+        query = f"SELECT list_id FROM relations WHERE user_id={User.current_logged.user_id}"
         ids_list = DB().get_data_from_db(query)
         for list_id in ids_list:
             query = f"SELECT tittle FROM lists WHERE list_id = {list_id[0]}"
             name_of_list = DB().get_data_from_db(query)[0][0]
             MainMenuGUI.lists.append(name_of_list)
 
-    def add_data_to_Treeview(self):
-        pass
-        query = f"SELECT FROM lists WHERE tittle='{MainMenuGUI.clicked_selected}' AND owner='{User.current_logged.nickname}'"
-        print(DB().get_data_from_db(query)[0][0])
+    def get_data_to_Treeview(self, clicked):
+        query = f"SELECT list_id FROM lists WHERE tittle='{clicked}' AND owner='{User.current_logged.nickname}'"
+        MainMenuGUI.list_id = DB().get_data_from_db(query)[0][0]
+        query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{MainMenuGUI.list_id}'"
+        for list in (DB().get_data_from_db(query)):
+            if self.counter % 2 == 0:
+
+                self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
+                                              values=(list[0], list[1], list[2]), tags=('evenrow',))
+            else:
+                self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
+                                              values=(list[0], list[1], list[2]), tags=('oddrow',))
+            self.counter += 1
+        self.clicked = clicked
+
+
 
 
     def init_listbox(self):
@@ -95,22 +109,35 @@ class MainMenuGUI:
         log_out = Button(self.frame2, text='   Log out   ', padx=10, command=self.click_log_out, width=10)
         log_out.grid(row=0, column=4)
 
+
     def click_log_out(self):
-        self.root.withdraw()
-        self.root.quit()
+        from GUI.LoginGUI import LoginGUI
+        self.root.destroy()
+        LoginGUI().start()
+
 
     def click_create_new_list(self):
+        self.root.destroy()
         CreateNewListGUI().start()
 
     def click_my_profile(self):
         pass
 
     def click_edit_list(self):
-        EditListGUI().start()
+        self.root.destroy()
+        EditListGUI(self.clicked).start()
 
     def click_add(self):
         pass
 
     def click_delete(self):
-        pass
-
+        title = 'Delete list'
+        question = 'Are you sure you want to delete the list?'
+        if InfoBoxGUI().askyesno(title, question):
+            query = f"DELETE FROM relations WHERE list_id={MainMenuGUI.list_id}"
+            DB().execute_query(query)
+            # TODO: something is wrong, probably problem is multi deleting 
+            query = f"DELETE FROM items WHERE list_id={MainMenuGUI.list_id}"
+            DB().execute_query(query)
+            query = f"DELETE FROM lists WHERE list_id={MainMenuGUI.list_id}"
+            DB().execute_query(query)

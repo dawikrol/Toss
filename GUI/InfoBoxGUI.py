@@ -16,5 +16,14 @@ class InfoBoxGUI:
         self.root.quit()
         self.root.mainloop()
 
+    def askyesno(self, title, ask):
+        response = messagebox.askyesno(title, ask)
+        if response == 1:
+            return 1
+        else:
+            return 0
+
+
+
 
 

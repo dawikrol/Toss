@@ -65,7 +65,7 @@ class CreateNewListGUI:
             InfoBoxGUI().info_box(message)
         else:
             CreateNewListGUI.list_name = self.list_name.get()
-            self.root.withdraw()
+            self.root.destroy()
             CreateNewListGUI.AddProductsGUI().start()
 
     class AddProductsGUI:
@@ -219,7 +219,7 @@ class CreateNewListGUI:
             CreateNewListGUI.num_of_product = self.num_of_products
             CreateNewListGUI.price_per_item = self.prise_of_products
             print(CreateNewListGUI.list_of_products, CreateNewListGUI.num_of_product, CreateNewListGUI.price_per_item)
-            self.root.withdraw()
+            self.root.destroy()
             CreateNewListGUI.AddFriendsGUI().start()
 
         def click_delete_button(self):
@@ -290,8 +290,10 @@ class CreateNewListGUI:
             CreateNewListGUI.AddFriendsGUI().add_list_to_db()
             CreateNewListGUI.AddFriendsGUI().add_products_to_db()
             CreateNewListGUI.AddFriendsGUI().add_data_to_relations_table()
-            self.root.withdraw()
-            self.root.quit()
+            self.root.destroy()
+            from GUI.MainMenuGUI import MainMenuGUI
+            MainMenuGUI().start()
+
 
         def add_data_to_lists_table(self):
             # preparing data to insert to lists table
