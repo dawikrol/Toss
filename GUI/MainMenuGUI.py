@@ -10,7 +10,6 @@ from Model.User import User
 
 class MainMenuGUI:
 
-    lists = []
     clicked_selected = []
     list_id = ''
 
@@ -23,14 +22,18 @@ class MainMenuGUI:
         self.add_products_tree = None
         self.counter = 0
         self.clicked = ''
+        self.lists = []
 
 
     def start(self):
         self.root.title('Main menu')
         Label(self.root).grid(row=0, column=0)
         self.root.geometry('540x500')
+        self.get_data_to_drop_down_list()
         self.init_drop_down_list()
         self.init_listbox()
+        self.get_data_to_Treeview(self.lists[0])
+
         self.init_buttons()
 
         self.root.mainloop()
@@ -40,8 +43,8 @@ class MainMenuGUI:
         self.frame1.grid(row=0, column=0)
         self.get_data_to_drop_down_list()
         clicked = StringVar()
-        clicked.set(MainMenuGUI.lists[0])
-        drop = OptionMenu(self.frame1, clicked, *MainMenuGUI.lists, command=self.get_data_to_Treeview)
+        #clicked.set(self.lists[0])
+        drop = OptionMenu(self.frame1, clicked, *self.lists, command=self.get_data_to_Treeview)
         drop.config(width=80)
         drop.grid(row=1, column=0, columnspan=3)
         MainMenuGUI.clicked_selected = clicked.get()
@@ -52,9 +55,13 @@ class MainMenuGUI:
         for list_id in ids_list:
             query = f"SELECT tittle FROM lists WHERE list_id = {list_id[0]}"
             name_of_list = DB().get_data_from_db(query)[0][0]
-            MainMenuGUI.lists.append(name_of_list)
+            self.lists.append(name_of_list)
+        if len(self.lists) > 0:
+            pass
+
 
     def get_data_to_Treeview(self, clicked):
+        self.add_products_tree.delete(*self.add_products_tree.get_children())
         query = f"SELECT list_id FROM lists WHERE tittle='{clicked}' AND owner='{User.current_logged.nickname}'"
         MainMenuGUI.list_id = DB().get_data_from_db(query)[0][0]
         query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{MainMenuGUI.list_id}'"
@@ -141,3 +148,5 @@ class MainMenuGUI:
             DB().execute_query(query)
             query = f"DELETE FROM lists WHERE list_id={MainMenuGUI.list_id}"
             DB().execute_query(query)
+            self.root.destroy()
+            MainMenuGUI().start()

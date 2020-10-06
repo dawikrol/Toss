@@ -51,9 +51,8 @@ class DB:
             result = cursor.fetchall()
             return result
 
-
-    def add_user(self, user):
-        query = f"INSERT INTO users VALUES (NULL, '{user.nickname}', '{user.firstname}', '{user.surname}', '{user.email_address}', '{user.password}')"
+    def add_user(self, nickname, firstname, surname, email_address, password):
+        query = f"INSERT INTO users VALUES (NULL, '{nickname}', '{firstname}', '{surname}', '{email_address}', '{password}')"
         self.execute_query(query)
 
     def get_user_from_db(self, nick):

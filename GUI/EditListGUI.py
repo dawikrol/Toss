@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 
+from Functionality.MessageManager import MessageManager
+from GUI.CreateNewListGUI import CreateNewListGUI
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
 from Model.User import User
@@ -30,12 +32,7 @@ class EditListGUI:
         self.clicked = clicked
         self.style = ttk.Style()
         self.style.theme_use("clam")
-        style = ttk.Style()
-        style.theme_use("clam")
-        style.configure("Treeview", background="blue", foreground="black", rowheight=25, filedbackground="blue")
-        style.map("Treeview", background=[('selected', 'blue')])
-        print(self.clicked)
-
+        self.items = []
     def __del__(self):
         self.root.destroy()
 
@@ -124,16 +121,16 @@ class EditListGUI:
     def get_data_to_Treeview(self):
         query = f"SELECT list_id FROM lists WHERE tittle='{self.clicked}' AND owner='{User.current_logged.nickname}'"
         list_id = DB().get_data_from_db(query)[0][0]
-        print(self.clicked)
         query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{list_id}'"
-        for list in (DB().get_data_from_db(query)):
+        self.items = DB().get_data_from_db(query)
+        for item in self.items:
             if self.counter % 2 == 0:
 
                 self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
-                                              values=(list[0], list[1], list[2]), tags=('evenrow',))
+                                              values=(item[0], item[1], item[2]), tags=('evenrow',))
             else:
                 self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
-                                              values=(list[0], list[1], list[2]), tags=('oddrow',))
+                                              values=(item[0], item[1], item[2]), tags=('oddrow',))
             self.counter += 1
 
     def click_add_products_button(self):
@@ -210,7 +207,7 @@ class EditListGUI:
         pass
 
     def click_send_list(self):
-        pass
+        MessageManager().send_list(self.clicked, self.items)
 
     def click_complete_list(self):
         pass

@@ -38,20 +38,6 @@
 # add_products_tree.grid(row=0, column=0, columnspan=1, sticky=W+E)
 # add_products_tree.insert(parent='', index='end', iid=0, text='Parent', values=('1', '2', '2'))
 # root.mainloop()
-from tkinter import Tk, StringVar, OptionMenu
 
-
-class No:
-    def __init__(self):
-        self.root = Tk()
-
-    def start(self):
-
-        clicked = StringVar()
-        clicked.set('Tak')
-        drop = OptionMenu(self.root, clicked, "ta", "da", "ba")
-        drop.pack()
-        self.root.mainloop()
-
-No().start()
-
+l =['a']
+print(len(l))

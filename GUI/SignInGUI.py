@@ -22,10 +22,6 @@ class SignInGUI:
     def __del__(self):
         self.root.destroy()
 
-
-
-
-
     def start(self):
         self.root.title('Sign in page')
         Label(self.root, text="Sign up now!").grid(row=0, column=0, columnspan=2, padx=50, pady=10)
@@ -88,6 +84,7 @@ class SignInGUI:
 
         if InputDataValidator.sign_up_validator(nick, firstname, surname, email, password, r_password):
             UserManager.create_new_user(nick, firstname, surname, email, password)
+
 
         else:
             InfoBoxGUI().info_box(message='The entered data are incorrect')
