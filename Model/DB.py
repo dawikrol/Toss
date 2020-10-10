@@ -1,7 +1,5 @@
-from pprint import pprint
 import mysql.connector
 from mysql.connector import InterfaceError, ProgrammingError
-
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.User import User
 
@@ -30,7 +28,7 @@ class DB:
             cursor.execute(f"{query}")
         except ProgrammingError as e:
             error = f"Check query syntax! \n\n Error: {e}"
-            InfoBoxGUI.error_box(error)
+            InfoBoxGUI().error_box(error)
         except Exception as e:
             error = f"Something is wrong... \n\n {e}"
             InfoBoxGUI().error_box(error)
@@ -51,10 +49,7 @@ class DB:
             result = cursor.fetchall()
             return result
 
-    def add_user(self, nickname, firstname, surname, email_address, password):
-        query = f"INSERT INTO users VALUES (NULL, '{nickname}', '{firstname}', '{surname}', '{email_address}', '{password}')"
-        self.execute_query(query)
-
+    # GetUserFromDatabase ?
     def get_user_from_db(self, nick):
         query = f"SELECT * FROM users WHERE nick=\'{nick}\'"
         cursor = self.toss_db.cursor()

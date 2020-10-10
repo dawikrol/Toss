@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-from GUI.CreateNewListGUI import CreateNewListGUI
+from GUI.ListCreatorGUI import ListCreatorGUI
 from GUI.EditListGUI import EditListGUI
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
@@ -30,9 +30,13 @@ class MainMenuGUI:
         Label(self.root).grid(row=0, column=0)
         self.root.geometry('540x500')
         self.get_data_to_drop_down_list()
-        self.init_drop_down_list()
-        self.init_listbox()
-        self.get_data_to_Treeview(self.lists[0])
+        if len(self.lists) > 0:
+            self.init_drop_down_list()
+            self.init_listbox()
+            self.get_data_to_Treeview(self.lists[0])
+        else:
+            self.init_listbox()
+
 
         self.init_buttons()
 
@@ -43,7 +47,7 @@ class MainMenuGUI:
         self.frame1.grid(row=0, column=0)
         self.get_data_to_drop_down_list()
         clicked = StringVar()
-        #clicked.set(self.lists[0])
+        clicked.set(self.lists[0])
         drop = OptionMenu(self.frame1, clicked, *self.lists, command=self.get_data_to_Treeview)
         drop.config(width=80)
         drop.grid(row=1, column=0, columnspan=3)
@@ -56,8 +60,6 @@ class MainMenuGUI:
             query = f"SELECT tittle FROM lists WHERE list_id = {list_id[0]}"
             name_of_list = DB().get_data_from_db(query)[0][0]
             self.lists.append(name_of_list)
-        if len(self.lists) > 0:
-            pass
 
 
     def get_data_to_Treeview(self, clicked):
@@ -125,7 +127,7 @@ class MainMenuGUI:
 
     def click_create_new_list(self):
         self.root.destroy()
-        CreateNewListGUI().start()
+        ListCreatorGUI().start()
 
     def click_my_profile(self):
         pass

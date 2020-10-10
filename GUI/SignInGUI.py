@@ -1,9 +1,7 @@
 from tkinter import *
-
-from Functionality.UserManager import UserManager
 from GUI.InfoBoxGUI import InfoBoxGUI
-
 from GUI.Validator.InputDataValidator import InputDataValidator
+from Model.DB import DB
 
 
 class SignInGUI:
@@ -60,13 +58,13 @@ class SignInGUI:
         self.entry_email.grid(row=5, column=0)
 
     def init_entry_password(self):
-        self.entry_password = Entry(self.frame, width=35, borderwidth=7)
+        self.entry_password = Entry(self.frame, width=35, borderwidth=7, show="*")
         self.entry_password.insert(1, 'Password')
         self.entry_password.grid(row=6, column=0)
 
     def init_entry_return_password(self):
-        self.entry_repeat_password = Entry(self.frame, width=35, borderwidth=7)
-        self.entry_repeat_password.insert(1, 'Repeat the password')
+        self.entry_repeat_password = Entry(self.frame, width=35, borderwidth=7, show="*")
+        self.entry_repeat_password.insert(1, 'Password')
         self.entry_repeat_password.grid(row=7, column=0)
 
     def init_buttons(self):
@@ -75,6 +73,9 @@ class SignInGUI:
         create_account_buttons.grid(row=8, column=0, sticky=W+E)
 
     def click_create_account_button(self):
+
+        '''The click_create_account_button method check correctness input data.
+        If data are correctness, user is added to database. Otherwise, the infobox with error is displayed.'''
         nick = self.entry_nick_name.get()
         firstname = self.entry_firstname.get()
         surname = self.entry_surname.get()
@@ -83,11 +84,9 @@ class SignInGUI:
         r_password = self.entry_repeat_password.get()
 
         if InputDataValidator.sign_up_validator(nick, firstname, surname, email, password, r_password):
-            UserManager.create_new_user(nick, firstname, surname, email, password)
-
-
-        else:
-            InfoBoxGUI().info_box(message='The entered data are incorrect')
+            query = f"INSERT INTO users VALUES (NULL, '{nick}', '{firstname}', '{surname}', '{email}', '{r_password}')"
+            DB().execute_query(query)
         self.root.withdraw()
         self.root.quit()
+
 

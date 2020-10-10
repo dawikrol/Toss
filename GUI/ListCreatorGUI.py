@@ -6,7 +6,7 @@ from Model.DB import DB
 from Model.User import User
 
 
-class CreateNewListGUI:
+class ListCreatorGUI:
 
     list_name = ''
     list_of_products = []
@@ -64,11 +64,11 @@ class CreateNewListGUI:
             message = "A list with that name already exist. \n Name the list in a different way."
             InfoBoxGUI().info_box(message)
         else:
-            CreateNewListGUI.list_name = self.list_name.get()
+            ListCreatorGUI.list_name = self.list_name.get()
             self.root.destroy()
-            CreateNewListGUI.AddProductsGUI().start()
+            ListCreatorGUI.ProductsInserterGUI().start()
 
-    class AddProductsGUI:
+    class ProductsInserterGUI:
 
         def __init__(self):
             self.root = Tk()
@@ -215,12 +215,12 @@ class CreateNewListGUI:
             self.counter += 1
 
         def click_next_button(self):
-            CreateNewListGUI.list_of_products = self.list_of_products
-            CreateNewListGUI.num_of_product = self.num_of_products
-            CreateNewListGUI.price_per_item = self.prise_of_products
-            print(CreateNewListGUI.list_of_products, CreateNewListGUI.num_of_product, CreateNewListGUI.price_per_item)
+            ListCreatorGUI.list_of_products = self.list_of_products
+            ListCreatorGUI.num_of_product = self.num_of_products
+            ListCreatorGUI.price_per_item = self.prise_of_products
+            print(ListCreatorGUI.list_of_products, ListCreatorGUI.num_of_product, ListCreatorGUI.price_per_item)
             self.root.destroy()
-            CreateNewListGUI.AddFriendsGUI().start()
+            ListCreatorGUI.FriendsInserterGUI().start()
 
         def click_delete_button(self):
             # TODO: add deleting item from list_of_product
@@ -228,7 +228,7 @@ class CreateNewListGUI:
             for record in items:
                 self.add_products_tree.delete(record)
 
-    class AddFriendsGUI:
+    class FriendsInserterGUI:
 
         def __init__(self):
             self.root = Tk()
@@ -274,7 +274,7 @@ class CreateNewListGUI:
 
         def click_add_friend_button(self):
             nick = self.entry_friends.get()
-            if CreateNewListGUI.AddFriendsGUI().check_if_friend_exist_in_database(nick):
+            if ListCreatorGUI.FriendsInserterGUI().check_if_friend_exist_in_database(nick):
                 self.list_of_friends.append(nick)
                 self.init_listbox()
             else:
@@ -286,10 +286,10 @@ class CreateNewListGUI:
                 return True
 
         def click_create_list_button(self):
-            CreateNewListGUI.list_of_friends = self.list_of_friends
-            CreateNewListGUI.AddFriendsGUI().add_list_to_db()
-            CreateNewListGUI.AddFriendsGUI().add_products_to_db()
-            CreateNewListGUI.AddFriendsGUI().add_data_to_relations_table()
+            ListCreatorGUI.list_of_friends = self.list_of_friends
+            ListCreatorGUI.FriendsInserterGUI().add_list_to_db()
+            ListCreatorGUI.FriendsInserterGUI().add_products_to_db()
+            ListCreatorGUI.FriendsInserterGUI().add_data_to_relations_table()
             self.root.destroy()
             from GUI.MainMenuGUI import MainMenuGUI
             MainMenuGUI().start()
@@ -297,36 +297,36 @@ class CreateNewListGUI:
 
         def add_data_to_lists_table(self):
             # preparing data to insert to lists table
-            str_of_products = ', '.join(CreateNewListGUI.list_of_products)
+            str_of_products = ', '.join(ListCreatorGUI.list_of_products)
             str_of_products = str_of_products[:-2]
             # TODO: a part this functionality has been moved to CreateNewListGUI
             #  insert data to lists table
-            query = f"INSERT INTO lists VALUES (NULL,'{CreateNewListGUI.list_name}', '{str_of_products}');"
+            query = f"INSERT INTO lists VALUES (NULL,'{ListCreatorGUI.list_name}', '{str_of_products}');"
             DB().execute_query(query)
 
         def add_data_to_relations_table(self):
             # preparing and insert data to relations table
-            CreateNewListGUI.list_of_friends.append(User.current_logged.nickname)
-            for friend in CreateNewListGUI.list_of_friends:
+            ListCreatorGUI.list_of_friends.append(User.current_logged.nickname)
+            for friend in ListCreatorGUI.list_of_friends:
                 try:
                     query = f"SELECT userid FROM users WHERE nick = '{friend}'"
                     user_id = DB().get_data_from_db(query)[0][0]
 
-                    query = f"INSERT INTO relations VALUES (NULL, {user_id}, {int(CreateNewListGUI.id_list_of_products)})"
+                    query = f"INSERT INTO relations VALUES (NULL, {user_id}, {int(ListCreatorGUI.id_list_of_products)})"
                     DB().execute_query(query)
                 except IndexError as e:
                     error = f"{e} \n\n Probably user '{friend}'  doesn't exists in database "
                     InfoBoxGUI().error_box(error)
 
         def add_list_to_db(self):
-            query = f"INSERT INTO lists VALUES (NULL,'{CreateNewListGUI.list_name}', '{User.current_logged.nickname}');"
+            query = f"INSERT INTO lists VALUES (NULL,'{ListCreatorGUI.list_name}', '{User.current_logged.nickname}');"
             DB().execute_query(query)
-            query = f"SELECT list_id FROM lists WHERE tittle = '{CreateNewListGUI.list_name}'"
-            CreateNewListGUI.id_list_of_products = DB().get_data_from_db(query)[0][0]
+            query = f"SELECT list_id FROM lists WHERE tittle = '{ListCreatorGUI.list_name}'"
+            ListCreatorGUI.id_list_of_products = DB().get_data_from_db(query)[0][0]
 
         def add_products_to_db(self):
-            for item, num, price in zip(CreateNewListGUI.list_of_products,CreateNewListGUI.num_of_product, CreateNewListGUI.price_per_item):
-                query = f"INSERT INTO items VALUES (NULL, {int(CreateNewListGUI.id_list_of_products)}, '{item}', {num}, {price})"
+            for item, num, price in zip(ListCreatorGUI.list_of_products, ListCreatorGUI.num_of_product, ListCreatorGUI.price_per_item):
+                query = f"INSERT INTO items VALUES (NULL, {int(ListCreatorGUI.id_list_of_products)}, '{item}', {num}, {price})"
                 DB().execute_query(query)
 
 
