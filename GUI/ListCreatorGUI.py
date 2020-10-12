@@ -178,9 +178,27 @@ class ListCreatorGUI:
                 self.add_record_to_add_products_tree()
                 self.init_entry_product()
 
+        def add_record_to_add_products_tree(self):
+            self.add_products_tree.delete(*self.add_products_tree.get_children())
+            for item, number, price in zip(self.list_of_products, self.num_of_products, self.prise_of_products):
+                if self.counter % 2 == 0:
+
+                    self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
+                                              values=(item, number, price), tags=('evenrow',))
+                else:
+                    self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
+                                              values=(item, number, price), tags=('oddrow',))
+                self.counter += 1
+
         def name_checker(self):
             if self.entry_product.get() == '':
                 message = "You must enter the name of the item."
+                InfoBoxGUI().info_box(message)
+            if self.entry_product.get() in self.list_of_products:
+                message = "The product is already on the list."
+                InfoBoxGUI().info_box(message)
+            if len(self.entry_product.get()) > 60:
+                message = "The name of product is too long."
                 InfoBoxGUI().info_box(message)
             else:
                 return True
@@ -203,30 +221,21 @@ class ListCreatorGUI:
             else:
                 return True
 
-        def add_record_to_add_products_tree(self):
-            if self.counter % 2 == 0:
-
-                self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
-                                          values=(self.entry_product.get(), self.entry_num_of_products.get(), self.entry_price.get()), tags=('evenrow',))
-            else:
-                self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
-                                          values=(self.entry_product.get(), self.entry_num_of_products.get(),
-                                                  self.entry_price.get()), tags=('oddrow',))
-            self.counter += 1
-
         def click_next_button(self):
             ListCreatorGUI.list_of_products = self.list_of_products
             ListCreatorGUI.num_of_product = self.num_of_products
             ListCreatorGUI.price_per_item = self.prise_of_products
-            print(ListCreatorGUI.list_of_products, ListCreatorGUI.num_of_product, ListCreatorGUI.price_per_item)
             self.root.destroy()
             ListCreatorGUI.FriendsInserterGUI().start()
 
         def click_delete_button(self):
             # TODO: add deleting item from list_of_product
-            items = self.add_products_tree.selection()
-            for record in items:
-                self.add_products_tree.delete(record)
+            #items = self.add_products_tree.selection()
+            for item in self.add_products_tree.selection():
+                item_text = self.add_products_tree.item(item, "text")
+                print(item_text)
+            # for record in items:
+            #     self.add_products_tree.delete(record)
 
     class FriendsInserterGUI:
 

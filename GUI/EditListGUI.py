@@ -25,6 +25,12 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
         self.add_record_to_add_products_tree()
         self.root.mainloop()
 
+    def add_date_to_lists(self):
+        query = f"SELECT list_id FROM lists WHERE tittle='{self.clicked}' AND owner='{User.current_logged.nickname}'"
+        list_id = DB().get_data_from_db(query)[0][0]
+        query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{list_id}'"
+        self.list_of_products.append(DB().get_data_from_db(query)[0])
+
 
     def init_buttons(self):
         add_products_buttons = Button(self.frame2, text='Add product', width=22,
@@ -66,23 +72,6 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
 
     def click_complete_list(self):
         pass
-
-    def add_record_to_add_products_tree(self):
-        self.add_products_tree.delete(*self.add_products_tree.get_children())
-        print(self.clicked)
-        query = f"SELECT list_id FROM lists WHERE tittle='{self.clicked}' AND owner='{User.current_logged.nickname}'"
-        list_id = DB().get_data_from_db(query)[0][0]
-        query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{list_id}'"
-        self.items = DB().get_data_from_db(query)
-        for item in self.items:
-            if self.counter % 2 == 0:
-
-                self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
-                                              values=(item[0], item[1], item[2]), tags=('evenrow',))
-            else:
-                self.add_products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
-                                              values=(item[0], item[1], item[2]), tags=('oddrow',))
-            self.counter += 1
 
 
 
