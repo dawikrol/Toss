@@ -32,6 +32,7 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
         self.list_of_products.append(DB().get_data_from_db(query)[0])
 
 
+
     def init_buttons(self):
         add_products_buttons = Button(self.frame2, text='Add product', width=22,
                                              command=self.click_add_products_button)

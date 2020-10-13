@@ -84,7 +84,6 @@ class ListCreatorGUI:
             self.entry_price = None
             self.style = None
             self.add_products_tree = None
-            self.style = None
             self.list_of_products = []
             self.num_of_products = []
             self.prise_of_products = []
@@ -147,7 +146,6 @@ class ListCreatorGUI:
             create_delete_buttons.grid(row=0, column=1)
 
         def init_products_treeview(self):
-            # style nie działa - treeview go nie widzi, zbudowane w innej metodzie (brudnopis) działa. Coś nie tak z klasą.
             style = ttk.Style()
             style.theme_use("clam")
             style.configure("Treeview", background="blue", foreground="black", rowheight=25, filedbackground="blue")
