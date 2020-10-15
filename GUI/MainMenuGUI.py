@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import ttk
-
-from GUI.ListCreatorGUI import ListCreatorGUI
-from GUI.EditListGUI import EditListGUI
+import GUI.ListCreatorGUI
+#from GUI.ListCreatorGUI import ListCreatorGUI
+#from GUI.EditListGUI import EditListGUI
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
 from Model.User import User
@@ -22,7 +22,7 @@ class MainMenuGUI:
         self.products_tree = None
         self.counter = 0
 
-        self.list_of_products = []
+        self.name_of_products = []
         self.number_of_products = []
         self.prices_of_products = []
 
@@ -78,11 +78,11 @@ class MainMenuGUI:
         MainMenuGUI.current_list_id = DB().get_data_from_db(query)[0][0]
         query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{MainMenuGUI.current_list_id}'"
         the_list = DB().get_data_from_db(query)
-        self.list_of_products = []
+        self.name_of_products = []
         self.number_of_products = []
         self.prices_of_products = []
         for item in the_list:
-            self.list_of_products.append(item[0])
+            self.name_of_products.append(item[0])
             self.number_of_products.append(item[1])
             self.prices_of_products.append(item[2])
 
@@ -90,7 +90,7 @@ class MainMenuGUI:
         if name_of_selected_list_ is not None:  # class is inherited and name_of_selected_list is not always passed on
             self.get_data_with_database(name_of_selected_list_)
         self.products_tree.delete(*self.products_tree.get_children())
-        for name, number, price in zip(self.list_of_products, self.number_of_products, self.prices_of_products):
+        for name, number, price in zip(self.name_of_products, self.number_of_products, self.prices_of_products):
             if self.counter % 2 == 0:
 
                 self.products_tree.insert(parent='', index='end', iid=self.counter, text='Parent',
@@ -143,14 +143,14 @@ class MainMenuGUI:
 
     def click_create_new_list(self):
         self.root.destroy()
-        ListCreatorGUI().start()
+        GUI.ListCreatorGUI().start()
 
     def click_my_profile(self):
         pass
 
     def click_edit_list(self):
         self.root.destroy()
-        EditListGUI(self.name_of_selected_list).start()
+        GUI.EditListGUI(self.name_of_selected_list).start()
 
     def click_delete(self):
         title = 'Delete list'
