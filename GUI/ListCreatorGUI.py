@@ -275,7 +275,7 @@ class ListCreatorGUI:
                     InfoBoxGUI().error_box(error)
 
         def add_list_to_db(self):
-            query = f"INSERT INTO lists VALUES (NULL,'{ListCreatorGUI.list_name}', '{User.current_logged.nickname}');"
+            query = f"INSERT INTO lists VALUES (NULL,'{ListCreatorGUI.list_name}', '{User.current_logged.nickname}')"
             DB().execute_query(query)
             query = f"SELECT list_id FROM lists WHERE tittle = '{ListCreatorGUI.list_name}'"
             ListCreatorGUI.id_list_of_products = DB().get_data_from_db(query)[0][0]

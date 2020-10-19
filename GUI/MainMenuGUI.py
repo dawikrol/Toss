@@ -76,6 +76,7 @@ class MainMenuGUI:
         '''Get data about the selected list and assign them to the appropriate variables.'''
         query = f"SELECT list_id FROM lists WHERE tittle='{name_of_selected_list_}' AND owner='{User.current_logged.nickname}'"
         MainMenuGUI.current_list_id = DB().get_data_from_db(query)[0][0]
+        self.current_list_id = DB().get_data_from_db(query)[0][0]
         query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{MainMenuGUI.current_list_id}'"
         the_list = DB().get_data_from_db(query)
         self.name_of_products = []

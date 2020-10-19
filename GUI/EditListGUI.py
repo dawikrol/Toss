@@ -24,8 +24,6 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
         self.get_data_to_Treeview(None)
         self.init_entry_product()
         self.init_buttons()
-        print(self.name_of_products, self.number_of_products)
-
         self.root.mainloop()
 
     def init_buttons(self):
@@ -51,6 +49,33 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
 
         back = Button(self.frame2, text='Back', command=self.click_back, width=22)
         back.grid(row=2, column=2)
+
+    def click_add_products_button(self):
+        if self.name_checker() and self.number_checker() and self.price_checker():
+            query = f"INSERT INTO items VALUES (NULL, {self.current_list_id}, '{self.entry_product.get()}', {self.entry_num_of_products.get()}, {self.entry_price.get()})"
+            DB().execute_query(query)
+            self.name_of_products.append(self.entry_product.get())
+            self.number_of_products.append(self.entry_num_of_products.get())
+            self.prices_of_products.append(self.entry_price.get())
+            self.add_record_to_add_products_tree()
+            self.init_entry_product()
+
+    def click_delete_button(self):
+        current_items = self.products_tree.selection()
+        try:
+            current_product = self.products_tree.item(current_items).get('values')[0]
+            index = self.name_of_products.index(current_product)
+            self.name_of_products.pop(index)
+            self.number_of_products.pop(index)
+            self.prices_of_products.pop(index)
+            self.add_record_to_add_products_tree()
+            query = f"DELETE FROM items WHERE list_id={self.current_list_id} and item='{current_product}'"
+            print(query)
+            DB().execute_query(query)
+        except Exception as e:
+            pass
+
+
 
     def click_send_list(self):
         MessageManager().send_list(self.clicked, self.items)
