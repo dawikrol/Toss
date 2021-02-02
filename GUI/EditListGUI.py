@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-
 from Functionality.MessageManager import MessageManager
 from GUI.ListCreatorGUI import ListCreatorGUI
 from GUI.InfoBoxGUI import InfoBoxGUI
@@ -10,9 +9,11 @@ from Model.User import User
 
 class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
 
-    def __init__(self, clicked):
+    def __init__(self, clicked, users_lists, id_users_lists):
         super().__init__()
         self.clicked = clicked
+        self.users_lists = users_lists
+        self.id_users_lists = id_users_lists
         self.items = []
 
     def start(self):
@@ -70,7 +71,6 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
             self.prices_of_products.pop(index)
             self.add_record_to_add_products_tree()
             query = f"DELETE FROM items WHERE list_id={self.current_list_id} and item='{current_product}'"
-            print(query)
             DB().execute_query(query)
         except Exception as e:
             pass

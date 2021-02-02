@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 import GUI.ListCreatorGUI
-#from GUI.ListCreatorGUI import ListCreatorGUI
-#from GUI.EditListGUI import EditListGUI
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
 from Model.User import User
@@ -28,6 +26,7 @@ class MainMenuGUI:
 
         self.name_of_selected_list = ''
         self.users_lists = []
+        self.id_users_lists = []
 
     def start(self):
         self.root.title('Main menu')
@@ -60,7 +59,8 @@ class MainMenuGUI:
         for list_id in ids_list:
             query = f"SELECT tittle FROM lists WHERE list_id = {list_id[0]}"
             name_of_list = DB().get_data_from_db(query)[0][0]
-            self.users_lists.append(name_of_list)
+            self.users_lists.append(name_of_list)#here I should add tuple (id_list, name)
+            self.id_users_lists.append(list_id[0])
 
     def init_drop_down_menu(self):
         '''Creates drop down menu contain users lists.
@@ -73,9 +73,9 @@ class MainMenuGUI:
 
     def get_data_with_database(self, name_of_selected_list_):
         '''Get data about the selected list and assign them to the appropriate variables.'''
-        query = f"SELECT list_id FROM lists WHERE tittle='{name_of_selected_list_}' AND owner='{User.current_logged.nickname}'"
-        MainMenuGUI.current_list_id = DB().get_data_from_db(query)[0][0]
-        self.current_list_id = DB().get_data_from_db(query)[0][0]
+        index = self.users_lists.index(name_of_selected_list_)
+        MainMenuGUI.current_list_id = self.id_users_lists[index]
+        self.current_list_id = self.id_users_lists[index]
         query = f"SELECT item, count_of_item, prise_per_item FROM items WHERE list_id='{MainMenuGUI.current_list_id}'"
         the_list = DB().get_data_from_db(query)
         self.name_of_products = []
@@ -146,11 +146,11 @@ class MainMenuGUI:
         GUI.ListCreatorGUI().start()
 
     def click_my_profile(self):
-        pass
+        print(self.users_lists, self.id_users_lists)
 
     def click_edit_list(self):
         self.root.destroy()
-        GUI.EditListGUI(self.name_of_selected_list).start()
+        GUI.EditListGUI(self.name_of_selected_list, self.users_lists, self.id_users_lists).start()
 
     def click_delete(self):
         title = 'Delete list'
