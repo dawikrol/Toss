@@ -65,7 +65,6 @@ class MainMenuGUI:
     def init_drop_down_menu(self):
         '''Creates drop down menu contain users lists.
         When the user select a list get_data_to_treeview fills the products treeview with the appropriate data.'''
-        self.get_data_to_drop_down_menu()
         selected_list = StringVar()
         selected_list.set(self.users_lists[0])
         drop_down_menu = OptionMenu(self.frame1, selected_list, *self.users_lists, command=self.get_data_to_Treeview)
