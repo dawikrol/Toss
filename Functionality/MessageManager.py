@@ -10,6 +10,8 @@ class MessageManager:
     def __init__(self):
         pass
 
+
+
     def send_list(self, title, items):
         body = f'{title}\n\n'
         for i in items:

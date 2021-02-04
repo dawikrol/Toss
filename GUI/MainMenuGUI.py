@@ -30,7 +30,7 @@ class MainMenuGUI:
 
     def start(self):
         self.root.title('Main menu')
-        self.root.geometry('540x400')
+        self.root.geometry('540x345')
         self.init_frames()
         self.get_data_to_drop_down_menu()
         if len(self.users_lists) > 0:  # check if the user has any lists to display
@@ -131,8 +131,8 @@ class MainMenuGUI:
         edit_list.grid(row=0, column=1)
         create_new_list = Button(self.frame2, text='Create new list', padx=2, command=self.click_create_new_list, width=12)
         create_new_list.grid(row=0, column=0, sticky='W')
-        my_profile = Button(self.frame2, text='  My profile ', padx=8, command=self.click_my_profile, width=11)
-        my_profile.grid(row=0, column=3)
+        send_list = Button(self.frame2, text='  Send list ', padx=8, command=self.click_send_list, width=11)
+        send_list.grid(row=0, column=3)
         log_out = Button(self.frame2, text='   Log out   ', padx=10, command=self.click_log_out, width=10)
         log_out.grid(row=0, column=4)
 
@@ -145,7 +145,7 @@ class MainMenuGUI:
         self.root.destroy()
         GUI.ListCreatorGUI().start()
 
-    def click_my_profile(self):
+    def click_send_list(self):
         print(self.users_lists, self.id_users_lists)
 
     def click_edit_list(self):

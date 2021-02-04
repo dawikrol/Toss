@@ -32,24 +32,12 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
                                              command=self.click_add_products_button)
         add_products_buttons.grid(row=0, column=0, sticky='w')
 
-        send_list = Button(self.frame2, text='Send list', command=self.click_send_list, width=22)
-        send_list.grid(row=0, column=2)
-
-        delete_buttons = Button(self.frame2, text='Delete', width=24,
+        delete_buttons = Button(self.frame2, text='Delete product', width=24,
                                        command=self.click_delete_button)
         delete_buttons.grid(row=0, column=1)
 
-        add_member = Button(self.frame2, text='Add member', command=self.click_add_member, width=22)
-        add_member.grid(row=1, column=0)
-
-        delete_member = Button(self.frame2, text='Delete member', command=self.click_delete_member, width=24)
-        delete_member.grid(row=1, column=1)
-
-        complete_list = Button(self.frame2, text='Complete a list', command=self.click_complete_list, width=22)
-        complete_list.grid(row=1, column=2)
-
         back = Button(self.frame2, text='Back', command=self.click_back, width=22)
-        back.grid(row=2, column=2)
+        back.grid(row=0, column=2)
 
     def click_add_products_button(self):
         if self.name_checker() and self.number_checker() and self.price_checker():
@@ -75,22 +63,14 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
         except Exception as e:
             pass
 
-
-
-    def click_send_list(self):
-        MessageManager().send_list(self.clicked, self.items)
+    # def click_send_list(self):
+    #     MessageManager().send_list(self.clicked, self.items)
 
     def click_back(self):
         from GUI.MainMenuGUI import MainMenuGUI
         self.root.destroy()
         MainMenuGUI().start()
 
-    def click_add_member(self):
-        pass
 
-    def click_delete_member(self):
-        pass
 
-    def click_complete_list(self):
-        pass
 
