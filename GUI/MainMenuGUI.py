@@ -4,6 +4,7 @@ import GUI.ListCreatorGUI
 from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
 from Model.User import User
+from Functionality.MessageManager import MessageManager
 
 
 class MainMenuGUI:
@@ -27,6 +28,10 @@ class MainMenuGUI:
         self.name_of_selected_list = ''
         self.users_lists = []
         self.id_users_lists = []
+
+        self.cost_of_list = 0
+        self.members_of_list = ''
+        self.cost_per_member = 0
 
     def start(self):
         self.root.title('Main menu')
@@ -59,7 +64,7 @@ class MainMenuGUI:
         for list_id in ids_list:
             query = f"SELECT tittle FROM lists WHERE list_id = {list_id[0]}"
             name_of_list = DB().get_data_from_db(query)[0][0]
-            self.users_lists.append(name_of_list)#here I should add tuple (id_list, name)
+            self.users_lists.append(name_of_list)
             self.id_users_lists.append(list_id[0])
 
     def init_drop_down_menu(self):
@@ -146,7 +151,13 @@ class MainMenuGUI:
         GUI.ListCreatorGUI().start()
 
     def click_send_list(self):
-        print(self.users_lists, self.id_users_lists)
+        self.get_cost_of_list()
+        self.get_members_of_list()
+        self.get_cost_per_member()
+        MessageManager(self.current_list_id, self.name_of_selected_list, self.name_of_products,
+                                     self.number_of_products, self.prices_of_products, self.cost_of_list,
+                                     self.members_of_list, self.cost_per_member)
+
 
     def click_edit_list(self):
         self.root.destroy()
@@ -164,3 +175,18 @@ class MainMenuGUI:
             DB().execute_query(query)
             self.root.destroy()
             MainMenuGUI().start()
+
+    def get_cost_of_list(self):
+        self.cost_of_list = 0
+        for num, price in zip(self.number_of_products, self.prices_of_products):
+            self.cost_of_list += num * price
+
+    def get_members_of_list(self):
+        query = f"SELECT user_id FROM relations WHERE list_id={self.current_list_id}"
+        self.members_of_list = DB().get_data_from_db(query)
+
+    def get_cost_per_member(self):
+        self.cost_per_member = round(self.cost_of_list / len(self.members_of_list), 2)
+
+
+

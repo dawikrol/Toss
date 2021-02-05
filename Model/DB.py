@@ -23,6 +23,7 @@ class DB:
             InfoBoxGUI().error_box(error)
 
     def execute_query(self, query):
+
         cursor = self.toss_db.cursor()
         try:
             cursor.execute(f"{query}")
@@ -34,6 +35,7 @@ class DB:
             InfoBoxGUI().error_box(error)
         else:
             self.toss_db.commit()
+        cursor.close()
 
     def get_data_from_db(self, query):
         cursor = self.toss_db.cursor()
