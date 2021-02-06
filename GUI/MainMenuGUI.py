@@ -11,6 +11,7 @@ class MainMenuGUI:
 
     '''MainMenuGIU create GUI and give access to main functionalities as: create new list, edit lists and delete lists.
      The current_list_id contain list_id which is currently selected in drop down menu by user.'''
+    # TODO: Future functionality: editing user profile: change password, nick, email etc. 
 
     current_list_id = ''
 
@@ -158,12 +159,12 @@ class MainMenuGUI:
                                      self.number_of_products, self.prices_of_products, self.cost_of_list,
                                      self.members_of_list, self.cost_per_member)
 
-
     def click_edit_list(self):
         self.root.destroy()
         GUI.EditListGUI(self.name_of_selected_list, self.users_lists, self.id_users_lists).start()
 
     def click_delete(self):
+        # TODO: Depending on the service, maybe only the owner should be able to delete the list?
         title = 'Delete list'
         question = 'Are you sure you want to delete the list?'
         if InfoBoxGUI().askyesno(title, question):

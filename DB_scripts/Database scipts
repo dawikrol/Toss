@@ -1,24 +1,17 @@
-    def create_users_table(self):
-        query = '''
-            CREATE TABLE users (
-            userid INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
-            nick VARCHAR(30),
-            firstname VARCHAR(30),
-            surname VARCHAR(30),
-            email VARCHAR(30),
-            password VARCHAR(30)
-            )'''
-        self.execute_query(query)
+CREATE TABLE users (
+userid INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
+nick VARCHAR(30),
+firstname VARCHAR(30),
+surname VARCHAR(30),
+email VARCHAR(30),
+password VARCHAR(30));
 
-
-'''Creating lists database'''
 CREATE TABLE lists (
 list_id INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
 tittle VARCHAR(30) DEFAULT 'list',
 owner VARCHAR(30)
 );
 
-'Creating table of items'
 CREATE TABLE items (
 item_id INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
 list_id INTEGER(10),
@@ -28,8 +21,6 @@ prise_per_item FLOAT(8),
 FOREIGN KEY (list_id) REFERENCES lists(list_id)
 );
 
-
-'''Creating base of relations '''
 CREATE TABLE relations (
 relation_id INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
 user_id INTEGER(10) NOT NULL,

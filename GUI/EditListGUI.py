@@ -1,13 +1,10 @@
 from tkinter import *
-from tkinter import ttk
-from Functionality.MessageManager import MessageManager
 from GUI.ListCreatorGUI import ListCreatorGUI
-from GUI.InfoBoxGUI import InfoBoxGUI
 from Model.DB import DB
-from Model.User import User
 
 
 class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
+    # TODO: Future functionality: adding and removing list participants, editing item existing in the list
 
     def __init__(self, clicked, users_lists, id_users_lists):
         super().__init__()
@@ -62,9 +59,6 @@ class EditListGUI(ListCreatorGUI.ProductsInserterGUI):
             DB().execute_query(query)
         except Exception as e:
             pass
-
-    # def click_send_list(self):
-    #     MessageManager().send_list(self.clicked, self.items)
 
     def click_back(self):
         from GUI.MainMenuGUI import MainMenuGUI

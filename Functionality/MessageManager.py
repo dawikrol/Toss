@@ -21,6 +21,7 @@ class MessageManager:
         self.prepare_list_to_send()
 
     def prepare_list_to_send(self):
+        # TODO: Improve list display
         subject = f'List:  {self.name_of_list} completed!'
         query = f"SELECT owner FROM lists WHERE list_id={self.id_list}"
         owner = DB().get_data_from_db(query)
@@ -28,7 +29,8 @@ class MessageManager:
                f'Products|   Number   |   Price\n\n'
         for item, num, price in zip(self.products, self.number, self.prices):
             body += f'{item}|   {num}|   {price}\n'
-        body += f'\n\nSum up: {self.cost}.\n You should return {self.cost_per_member} PLN to {owner[0][0]} who is owner the list.'
+        body += f'\n\nSum up: {self.cost}.\n You should return {self.cost_per_member} PLN to {owner[0][0]}' \
+                f' who is owner the list.'
         emails = []
         for user in self.members:
             query = f"SELECT email FROM users WHERE userid = {user[0]}"
@@ -40,6 +42,7 @@ class MessageManager:
             self.send_msg(subject, body, email)
 
     def send_msg(self, subject, body, recipient):
+        # TODO: eliminate keeping mail credentials in code
         msg = EmailMessage()
         msg['Subject'] = subject
         msg['From'] = 'menagerlists@gmail.com'

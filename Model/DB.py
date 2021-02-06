@@ -7,7 +7,7 @@ from Model.User import User
 class DB:
 
     def __init__(self):
-
+        # TODO: eliminate keeping DB credentials in code
         try:
             self.toss_db = mysql.connector.connect(
                 host='localhost',
@@ -51,7 +51,6 @@ class DB:
             result = cursor.fetchall()
             return result
 
-    # GetUserFromDatabase ?
     def get_user_from_db(self, nick):
         query = f"SELECT * FROM users WHERE nick=\'{nick}\'"
         cursor = self.toss_db.cursor()
