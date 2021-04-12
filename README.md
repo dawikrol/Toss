@@ -14,7 +14,9 @@ My first training project. Toss is shopping list that you can share with your fr
 ### Technologies
 
 Python(3.7)
-  Main libraries: tkinter
+
+   Main libraries: tkinter
+  
 MySQL(8.0)
 
 
@@ -30,7 +32,7 @@ passwd='admin1234',
 database='tossdb')
 ```
 
-I know that we should keep credentials in this wasy. It was my first project ;)). 
+I know that we can not keep credentials in this wasy but it was my first project ;)). 
 
 In this project I use standard SQL querying. Now I would use SQLAlchemy and ORM to do this in more Python way. 
 Of course I would use password hashing too.
