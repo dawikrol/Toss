@@ -50,5 +50,7 @@ Database script to create database is available in DB_scripts
 
 
 Main menu:
+
+
 ![image](https://user-images.githubusercontent.com/63808220/114876403-9317da00-9dfe-11eb-9b83-9c8a08565182.png)
 
