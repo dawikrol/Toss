@@ -26,13 +26,12 @@ Database configuration is required:
 Model -> DB.py
 
 ```
-host='localhost',
-user='root',
-passwd='admin1234',
-database='tossdb')
+MYSQL_HOSTNAME = 'localhost'
+MYSQL_USER = os.environ.get('DB_USER')
+MYSQL_PASSWORD = os.environ.get('DB_PASS')
+MYSQL_DATABASE = 'tossdb'
 ```
 
-I know that we can not keep credentials in this wasy but it was my first project ;)). 
 
 In this project I use standard SQL querying. Now I would use SQLAlchemy and ORM to do this in more Python way. 
 Of course I would use password hashing too.
