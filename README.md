@@ -3,7 +3,7 @@
 My first training project. Toss is shopping list that you can share with your friends. The main goals this project was:
 - understanding OOP in Python
 - using database in Python project
-- createing application in Python
+- creating application in Python
 
 ### Table of contents
 * [Technologies](#Technologies)
